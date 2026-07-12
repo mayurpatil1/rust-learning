@@ -1,0 +1,5 @@
+/target
+**/target/
+
+# leftover duplicate/scratch folder, not part of the tracked course notes
+/1/
