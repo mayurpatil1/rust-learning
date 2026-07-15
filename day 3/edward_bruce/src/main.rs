@@ -1,7 +1,9 @@
 use std::collections::HashMap;
 use std::io::{self, Write};
+use serde::{Serialize, Deserialize};
+use std::fs;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 struct Room {
     name: String,
     description: String,
@@ -9,7 +11,7 @@ struct Room {
     items: Vec<String>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 struct Player {
     name: String,
     health: u32,
@@ -28,7 +30,7 @@ fn main() {
     };
 
     println!("=== The Tiny Dungeon ===");
-    println!("Commands: look, go <direction>, take <item>, drop <item>, inventory, quit\n");
+   println!("Commands: look, go <direction>, take <item>, drop <item>, inventory, save, load, quit\n");
     look(&hero, &rooms);
 
     loop {
@@ -51,8 +53,25 @@ fn main() {
             ["look"] => look(&hero, &rooms),
             ["go", direction] => move_player(&mut hero, &rooms, direction),
             ["inventory"] | ["inv"] => show_inventory(&hero),
-            ["take", item] => take_item(&mut hero, &mut rooms, item),
-            ["drop", item] => drop_item(&mut hero, &mut rooms, item),
+           ["take"] => println!("Take what?"),
+["take", item_words @ ..] => {
+    let item = item_words.join(" ");
+    take_item(&mut hero, &mut rooms, &item);
+}
+["drop"] => println!("Drop what?"),
+["drop", item_words @ ..] => {
+    let item = item_words.join(" ");
+    drop_item(&mut hero, &mut rooms, &item);
+}
+            ["save"] => save_game(&hero),
+            ["load"] => match load_game() {
+                Some(loaded) => {
+                    hero = loaded; 
+                    println!("Game loaded. Welcome back, {}!", hero.name);
+                    look(&hero, &rooms);
+                }
+                None => println!("Could not load a game."),
+            },
             [] => continue,
             _ => println!("I don't understand that command."),
         }
@@ -160,5 +179,36 @@ fn drop_item(player: &mut Player, rooms: &mut HashMap<String, Room>, item: &str)
             println!("You drop the {}.", item);
         }
         None => println!("You aren't carrying a {}.", item),
+    }
+}
+
+
+fn save_game(player: &Player) {
+    match serde_json::to_string_pretty(player) {
+        Ok(json) => {
+            match fs::write("savegame.json", json) {
+                Ok(_) => println!("Game saved."),
+                Err(e) => println!("Could not write save file: {}", e),
+            }
+        }
+        Err(e) => println!("Could not save game: {}", e),
+    }
+}
+
+fn load_game() -> Option<Player> {
+    let json = match fs::read_to_string("savegame.json") {
+        Ok(contents) => contents,
+        Err(_) => {
+            println!("No save file found.");
+            return None;
+        }
+    };
+
+    match serde_json::from_str(&json) {
+        Ok(player) => Some(player),
+        Err(e) => {
+            println!("Save file is corrupted: {}", e);
+            None
+        }
     }
 }

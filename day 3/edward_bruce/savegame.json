@@ -1,0 +1,8 @@
+{
+  "name": "Aria",
+  "health": 100,
+  "current_room": "cellar",
+  "inventory": [
+    "torch"
+  ]
+}
