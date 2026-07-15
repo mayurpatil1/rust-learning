@@ -53,16 +53,16 @@ fn main() {
             ["look"] => look(&hero, &rooms),
             ["go", direction] => move_player(&mut hero, &rooms, direction),
             ["inventory"] | ["inv"] => show_inventory(&hero),
-           ["take"] => println!("Take what?"),
-["take", item_words @ ..] => {
-    let item = item_words.join(" ");
-    take_item(&mut hero, &mut rooms, &item);
-}
-["drop"] => println!("Drop what?"),
-["drop", item_words @ ..] => {
-    let item = item_words.join(" ");
-    drop_item(&mut hero, &mut rooms, &item);
-}
+            ["take"] => println!("Take what?"),
+            ["take", item_words @ ..] => {
+                let item = item_words.join(" ");
+                take_item(&mut hero, &mut rooms, &item);
+            }
+            ["drop"] => println!("Drop what?"),
+            ["drop", item_words @ ..] => {
+                let item = item_words.join(" ");
+                drop_item(&mut hero, &mut rooms, &item);
+            }
             ["save"] => save_game(&hero),
             ["load"] => match load_game() {
                 Some(loaded) => {
