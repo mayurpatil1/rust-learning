@@ -1,0 +1,39 @@
+{
+  "player": {
+    "name": "Aria",
+    "health": 100,
+    "current_room": "entrance",
+    "inventory": [
+      "torch"
+    ]
+  },
+  "rooms": {
+    "cellar": {
+      "name": "Dusty Cellar",
+      "description": "A cramped cellar smelling of old wine. Stairs lead up.",
+      "exits": {
+        "up": "hall"
+      },
+      "items": [
+        "rusty key"
+      ]
+    },
+    "entrance": {
+      "name": "Entrance Hall",
+      "description": "A damp stone room. An exit leads north.",
+      "exits": {
+        "north": "hall"
+      },
+      "items": []
+    },
+    "hall": {
+      "name": "Great Hall",
+      "description": "A vast hall wrapped in cobwebs. Exits lead south and down.",
+      "exits": {
+        "south": "entrance",
+        "down": "cellar"
+      },
+      "items": []
+    }
+  }
+}
