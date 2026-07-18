@@ -11,7 +11,7 @@ struct Adventurer {
 }
 
 fn main () {
-    let mut roaster = vec![
+    let mut roster = vec![
         Adventurer { name: String::from("Aria"),  class: String::from("Mage"),   level: 12, gold: 340 },
         Adventurer { name: String::from("Borin"), class: String::from("Warrior"),level: 8,  gold: 120 },
         Adventurer { name: String::from("Cael"),  class: String::from("Rogue"),  level: 15, gold: 780 },
@@ -29,14 +29,14 @@ fn main () {
     println!("A purse of 50 gold after a raise: {}\n",  with_raise(50));
 
 
-    let names : Vec<String> = roaster
+    let names : Vec<String> = roster
     .iter()
     .map(|a| a.name.clone())
     .collect();
 
     println!("Guild members: {}", names.join(", "));
 
-    let vecterans : Vec<&Adventurer> = roaster
+    let vecterans : Vec<&Adventurer> = roster
     .iter()
     .filter(|a| is_high_level(a))
     .collect();
@@ -47,15 +47,15 @@ fn main () {
         println!("  - {}", describe(a));
     }
 
-    let total_gold : u32 = roaster.iter().map(|a| a.gold).sum();
-    let average_gold = total_gold as f64 / roaster.len() as f64;
+    let total_gold : u32 = roster.iter().map(|a| a.gold).sum();
+    let average_gold = total_gold as f64 / roster.len() as f64;
 
     println!("\nTreasury total: {} gold", total_gold);
     println!("Average per member: {:.1} gold", average_gold);
 
 
     let target = "Cael";
-    let level = roaster
+    let level = roster
     .iter()
     .find(|a| a.name == target)
     .map(|a| a.level);
@@ -67,18 +67,18 @@ fn main () {
 
 
     println!("\nRoster:");
-    for (index, a) in roaster.iter().enumerate() {
+    for (index, a) in roster.iter().enumerate() {
         println!("  {}. {}", index + 1, a.name); // +1 because enumerate starts at 0
     }
 
-    for a in roaster.iter_mut() {
+    for a in roster.iter_mut() {
         a.gold += 100;
     }
 
-    let new_total: u32 = roaster.iter().map(|a| a.gold).sum();
+    let new_total: u32 = roster.iter().map(|a| a.gold).sum();
     println!("\nAfter a 100-gold bonus each, treasury is now {} gold.", new_total);
 
 
-    let all_names : Vec<String> = roaster.into_iter().map(|a| a.name).collect();
+    let all_names : Vec<String> = roster.into_iter().map(|a| a.name).collect();
     println!("\nFinal roll call (roster consumed): {}", all_names.join(", "));
 }
