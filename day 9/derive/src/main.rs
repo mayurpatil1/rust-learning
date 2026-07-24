@@ -8,7 +8,7 @@ use std::fmt;
 // 2. Clone — enables .clone(), an explicit copy.
 // 3. PartialEq — enables == and !=, comparing field by field.
 // ---------------------------------------------------------------
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 struct Item {
     name: String,
     value: u32,
